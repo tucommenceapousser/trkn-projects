@@ -21,6 +21,7 @@ if not os.path.exists(PROJECTS_DIR):
     os.makedirs(PROJECTS_DIR)
 
 # API pour géolocalisation
+GEOPENCAGE = os.getenv("GEOPENCAGE")
 GEO_API_KEY = os.getenv("GEO_API_KEY")
 GEO_API_URL = "https://ipinfo.io/"
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
@@ -94,7 +95,7 @@ def view_logs():
 
 def get_coordinates(city, country):
     # Utilisation de l'API de géolocalisation pour obtenir les coordonnées
-    url = f'https://api.opencagedata.com/geocode/v1/json?q={city},{country}&key={GEO_API_KEY}'
+    url = f'https://api.opencagedata.com/geocode/v1/json?q={city},{country}&key={GEOPENCAGE}'
     response = requests.get(url)
     data = response.json()
     
