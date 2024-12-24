@@ -31,9 +31,6 @@
             text-decoration: none;
             color: #00ff00;
         }
-        a:hover {
-            color: #00cc00;
-        }
         .back-btn {
             display: block;
             margin: 20px auto;
@@ -45,21 +42,27 @@
             border-radius: 5px;
             text-decoration: none;
         }
+        body { background-color: #121212; color: #00FFAA; font-family: Arial, sans-serif; }
+        a { color: #00FFAA; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        button { background-color: #00FFAA; color: #121212; border: none; padding: 5px 10px; cursor: pointer; }
+        button:hover { background-color: #00D494; }
     </style>
 </head>
 <body>
-    <h1>Référentiels GitHub de {{ username }}</h1>
-    <h2>Liste des Référentiels</h2>
+    <h1>Référentiels GitHub pour l'utilisateur : {{ username }}</h1>
     <ul>
         {% for repo in repos %}
         <li>
-            <a href="{{ repo.html_url }}" target="_blank">{{ repo.name }}</a>
-            <p>Description : {{ repo.description or 'Aucune description' }}</p>
-            <p>Langage principal : {{ repo.language or 'Non spécifié' }}</p>
+            <strong>{{ repo.name }}</strong> - <a href="{{ repo.html_url }}" target="_blank">Voir le repo</a>
+            <!-- Ajouter un bouton pour cloner ce repository -->
+            <form action="{{ url_for('add_project') }}" method="POST" style="display: inline;">
+                <input type="hidden" name="github_url" value="{{ repo.clone_url }}">
+                <button type="submit">Ajouter ce projet</button>
+            </form>
         </li>
         {% endfor %}
     </ul>
-
-    <a class="back-btn" href="{{ url_for('index') }}">Retour</a>
+    <a href="{{ url_for('index') }}">Retour à l'accueil</a>
 </body>
 </html>
