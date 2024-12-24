@@ -2,22 +2,73 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Projets</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>trhacknon - Mes Projets</title>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        h1, h2 {
+            color: #00ff00;
+            text-align: center;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background-color: #333;
+            margin: 5px;
+            padding: 10px;
+            border-radius: 5px;
+            color: #00e6e6;
+        }
+        a {
+            text-decoration: none;
+            color: #00ff00;
+        }
+        form {
+            text-align: center;
+            margin: 20px 0;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            border: none;
+        }
+        input {
+            width: 300px;
+        }
+        button {
+            background-color: #00ff00;
+            color: #000;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #00cc00;
+        }
+    </style>
 </head>
 <body>
-    <h1>Liste des projets</h1>
+    <h1>trhacknon - Mes Projets</h1>
+    <h2>Liste des Projets</h2>
     <ul>
         {% for project in projects %}
         <li>
-            <a href="{{ url_for('project_details', project_name=project) }}">{{ project }}</a> 
+            <a href="{{ url_for('project_details', project_name=project) }}">{{ project }}</a>
             - <a href="{{ url_for('download', project_name=project) }}">Télécharger</a>
         </li>
         {% endfor %}
     </ul>
 
-    <h2>Ajouter un projet depuis GitHub</h2>
+    <h2>Ajouter un Projet GitHub</h2>
     <form action="{{ url_for('add_project') }}" method="post">
-        <input type="text" name="github_url" placeholder="URL du référentiel GitHub">
+        <input type="text" name="github_url" placeholder="URL du référentiel GitHub" required>
         <button type="submit">Ajouter</button>
     </form>
 
