@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logs des téléchargements</title>
-    <style>
+    <title>Logs des Téléchargements</title>
+<style>
         body {
             font-family: Arial, sans-serif;
             background-color: #1a1a1a;
@@ -22,16 +22,29 @@
         h1 {
             color: #00ff00;
         }
+        body { background-color: #121212; color: #fff; font-family: Arial, sans-serif; }
+        .log-entry { margin: 10px; padding: 10px; background-color: #1e1e1e; border-radius: 5px; }
+        .btn { padding: 5px 10px; color: #fff; background-color: #f00; border: none; cursor: pointer; }
+        .btn-reset { background-color: #00f; }
     </style>
 </head>
 <body>
-    <h1>Logs des téléchargements</h1>
-    <pre>
-        {% for log in logs %}
-            {{ log }}
-        {% else %}
-            Aucun log disponible.
-        {% endfor %}
-    </pre>
+
+<h1>Logs des Téléchargements</h1>
+
+<a href="/download_logs" class="btn">Télécharger les logs</a>
+<a href="/reset_logs" class="btn btn-reset">Réinitialiser les logs</a>
+
+<h2>Liste des logs</h2>
+{% for log in logs %}
+    <div class="log-entry">
+        <p><strong>IP:</strong> {{ log['ip'] }}</p>
+        <p><strong>Projet:</strong> {{ log['project'] }}</p>
+        <p><strong>Agent utilisateur:</strong> {{ log['user_agent'] }}</p>
+        <p><strong>Geo Data:</strong> {{ log['geo_data'] }}</p>
+        <a href="/delete_log/{{ log['id'] }}" class="btn">Supprimer ce log</a>
+    </div>
+{% endfor %}
+
 </body>
 </html>
