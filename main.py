@@ -35,18 +35,30 @@ def index():
     return render_template("index.html", projects=projects)
 
 LOG_FILE = "downloads.log"
+SECRET_PASSWORD = "Trh@ckn0n"  # Le mot de passe secret
 
-@app.route("/logs")
+@app.route("/logs", methods=["GET", "POST"])
 def view_logs():
-    # Vérifier si le fichier existe
-    if os.path.exists(LOG_FILE):
-        with open(LOG_FILE, "r") as file:
-            logs = file.readlines()  # Lire toutes les lignes du fichier log
-    else:
-        logs = []  # Si le fichier n'existe pas, retourner une liste vide
+    # Si le formulaire est soumis avec un mot de passe
+    if request.method == "POST":
+        password = request.form.get("password")
+        
+        # Vérifier si le mot de passe est correct
+        if password != SECRET_PASSWORD:
+            flash("Mot de passe incorrect.", "error")
+            return redirect(url_for("view_logs"))
+        
+        # Lire le fichier de logs
+        if os.path.exists(LOG_FILE):
+            with open(LOG_FILE, "r") as file:
+                logs = file.readlines()  # Lire toutes les lignes du fichier log
+        else:
+            logs = []  # Si le fichier n'existe pas, retourner une liste vide
 
-    return render_template("logs.html", logs=logs)
-
+        return render_template("logs.html", logs=logs)
+    
+    # Si la méthode est GET, on demande simplement un mot de passe
+    return render_template("login.html")
 
 @app.route("/github_repos/<username>")
 def github_repos(username):
