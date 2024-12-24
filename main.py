@@ -9,7 +9,7 @@ from git import Repo  # GitPython pour cloner des repositories
 load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = "your_secret_key"  # Nécessaire pour les messages flash
+app.secret_key = "trkntrkn"  # Nécessaire pour les messages flash
 
 # Dossier contenant les projets
 PROJECTS_DIR = "projects"
