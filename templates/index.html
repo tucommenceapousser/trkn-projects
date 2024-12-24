@@ -66,6 +66,12 @@
         {% endfor %}
     </ul>
 
+    <h2>Voir les Référentiels GitHub d'un Utilisateur</h2>
+<form action="{{ url_for('github_repos', username='') }}" method="get" onsubmit="event.preventDefault(); window.location.href='/github_repos/' + document.getElementById('github_username').value;">
+    <input type="text" id="github_username" placeholder="Nom d'utilisateur GitHub" required>
+    <button type="submit">Rechercher</button>
+</form>
+    
     <h2>Ajouter un Projet GitHub</h2>
     <form action="{{ url_for('add_project') }}" method="post">
         <input type="text" name="github_url" placeholder="URL du référentiel GitHub" required>
