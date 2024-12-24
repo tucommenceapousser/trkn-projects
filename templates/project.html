@@ -3,10 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projet: {{ project_name }}</title>
+    <title>trhacknon - {{ project_name }}</title>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        h1, h2 {
+            color: #00ff00;
+            text-align: center;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background-color: #333;
+            margin: 5px;
+            padding: 10px;
+            border-radius: 5px;
+            color: #00e6e6;
+        }
+        a {
+            text-decoration: none;
+            color: #00ff00;
+        }
+        a:hover {
+            color: #00cc00;
+        }
+        .back-btn {
+            display: block;
+            margin: 20px auto;
+            width: 100px;
+            text-align: center;
+            padding: 10px;
+            background-color: #00ff00;
+            color: #000;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-    <h1>Détails du projet: {{ project_name }}</h1>
-    <a href="/download/{{ project_name }}">Télécharger</a>
+    <h1>trhacknon - {{ project_name }}</h1>
+    <h2>Contenu du Projet</h2>
+    <ul>
+        {% for content in contents %}
+        <li>{{ content }}</li>
+        {% endfor %}
+    </ul>
+
+    <a class="back-btn" href="{{ url_for('index') }}">Retour</a>
 </body>
 </html>
