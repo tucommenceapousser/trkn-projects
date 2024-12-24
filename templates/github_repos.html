@@ -47,6 +47,9 @@
         a:hover { text-decoration: underline; }
         button { background-color: #00FFAA; color: #121212; border: none; padding: 5px 10px; cursor: pointer; }
         button:hover { background-color: #00D494; }
+        .pagination { margin-top: 20px; }
+        .pagination a { color: #00FFAA; margin: 0 5px; text-decoration: none; }
+        .pagination a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -63,6 +66,17 @@
         </li>
         {% endfor %}
     </ul>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        {% if prev_page %}
+        <a href="{{ url_for('github_repos', username=username, page=prev_page) }}">Précédent</a>
+        {% endif %}
+        {% if next_page %}
+        <a href="{{ url_for('github_repos', username=username, page=next_page) }}">Suivant</a>
+        {% endif %}
+    </div>
+
     <a href="{{ url_for('index') }}">Retour à l'accueil</a>
 </body>
 </html>
