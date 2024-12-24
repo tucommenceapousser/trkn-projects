@@ -94,8 +94,18 @@ def github_repos(username):
     return render_template("github_repos.html", username=username, repos=repos, next_page=next_page, prev_page=prev_page)
 
 
-# Route pour afficher les référentiels publics d'un utilisateur GitHub
-# Route pour télécharger un projet
+def get_client_ip():
+    # Vérifie d'abord l'en-tête X-Forwarded-For (pour les proxys)
+    forwarded_for = request.headers.get('X-Forwarded-For')
+    if forwarded_for:
+        # X-Forwarded-For peut contenir une liste d'IP, donc on prend la première
+        ip = forwarded_for.split(',')[0]
+    else:
+        # Si X-Forwarded-For n'est pas présent, on prend l'IP directement
+        ip = request.remote_addr
+    
+    return ip
+
 @app.route("/download/<project_name>")
 def download(project_name):
     project_path = os.path.join(PROJECTS_DIR, project_name)
@@ -112,7 +122,7 @@ def download(project_name):
                 zipf.write(file_path, arcname)
 
     # Récupération des informations du visiteur
-    visitor_ip = request.remote_addr
+    visitor_ip = get_client_ip()  # Utilisation de la fonction pour récupérer l'IP
     geo_data = requests.get(f"{GEO_API_URL}{visitor_ip}?token={GEO_API_KEY}").json()
     user_agent = request.headers.get("User-Agent")
 
@@ -128,7 +138,7 @@ def download(project_name):
     # Envoi du fichier zip
     response = send_file(zip_path, as_attachment=True)
     os.remove(zip_path)  # Supprimer le fichier zip après envoi
-    return response
+    return response    
 
 # Route pour voir les détails d'un projet
 @app.route("/project/<project_name>")
