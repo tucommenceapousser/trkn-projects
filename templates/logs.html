@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logs des Téléchargements</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -43,6 +44,11 @@
         .btn-reset:hover {
             background-color: #009;
         }
+        .map-container {
+            height: 300px;
+            width: 100%;
+            margin-top: 15px;
+        }
     </style>
 </head>
 <body>
@@ -60,8 +66,27 @@
         <p><strong>Projet:</strong> {{ log['project'] }}</p>
         <p><strong>Agent utilisateur:</strong> {{ log['user_agent'] }}</p>
         <p><strong>Geo Data:</strong> {{ log['geo_data']['city'] }}, {{ log['geo_data']['country'] }}</p>
+        
+        <div class="map-container" id="map-{{ log['id'] }}"></div> <!-- Map container -->
+        
         <a href="/delete_log/{{ log['id'] }}" class="btn">Supprimer ce log</a>
     </div>
+
+    <!-- Initialize Leaflet map for each log -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        var map = L.map('map-{{ log['id'] }}').setView([{{ log['geo_data']['latitude'] }}, {{ log['geo_data']['longitude'] }}], 13); // Center on log's coordinates
+
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Add a marker at the log's location
+        L.marker([{{ log['geo_data']['latitude'] }}, {{ log['geo_data']['longitude'] }}]).addTo(map)
+            .bindPopup("<b>{{ log['geo_data']['city'] }}</b><br>{{ log['geo_data']['country'] }}")
+            .openPopup();
+    </script>
 {% endfor %}
 
 </body>
