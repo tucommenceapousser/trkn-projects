@@ -34,6 +34,20 @@ def index():
     projects = [d for d in os.listdir(PROJECTS_DIR) if os.path.isdir(os.path.join(PROJECTS_DIR, d))]
     return render_template("index.html", projects=projects)
 
+LOG_FILE = "downloads.log"
+
+@app.route("/logs")
+def view_logs():
+    # Vérifier si le fichier existe
+    if os.path.exists(LOG_FILE):
+        with open(LOG_FILE, "r") as file:
+            logs = file.readlines()  # Lire toutes les lignes du fichier log
+    else:
+        logs = []  # Si le fichier n'existe pas, retourner une liste vide
+
+    return render_template("logs.html", logs=logs)
+
+
 @app.route("/github_repos/<username>")
 def github_repos(username):
     # Nombre de repos par page
