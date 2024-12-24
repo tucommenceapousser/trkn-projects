@@ -1,13 +1,15 @@
 import os
 import zipfile
-from flask import Flask, render_template, send_file, request
+from flask import Flask, render_template, send_file, request, redirect, url_for, flash
 import requests
 from dotenv import load_dotenv
+from git import Repo  # GitPython pour cloner des repositories
 
 # Charger les variables d'environnement
 load_dotenv()
 
 app = Flask(__name__)
+app.secret_key = "your_secret_key"  # Nécessaire pour les messages flash
 
 # Dossier contenant les projets
 PROJECTS_DIR = "projects"
@@ -15,7 +17,6 @@ PROJECTS_DIR = "projects"
 # Vérifier et créer le dossier projects s'il n'existe pas
 if not os.path.exists(PROJECTS_DIR):
     os.makedirs(PROJECTS_DIR)
-    print(f"Dossier '{PROJECTS_DIR}' créé.")
 
 # API pour géolocalisation
 GEO_API_KEY = os.getenv("GEO_API_KEY")
@@ -75,6 +76,33 @@ def project_details(project_name):
         return "Projet introuvable.", 404
 
     return render_template("project.html", project_name=project_name)
+
+# Route pour ajouter un projet depuis GitHub
+@app.route("/add_project", methods=["GET", "POST"])
+def add_project():
+    if request.method == "POST":
+        github_url = request.form.get("github_url")
+        if not github_url:
+            flash("URL du référentiel GitHub manquante.", "error")
+            return redirect(url_for("add_project"))
+
+        try:
+            # Nom du projet basé sur le dernier segment de l'URL
+            project_name = github_url.split("/")[-1].replace(".git", "")
+            project_path = os.path.join(PROJECTS_DIR, project_name)
+
+            # Cloner le référentiel GitHub
+            if os.path.exists(project_path):
+                flash(f"Le projet '{project_name}' existe déjà.", "error")
+            else:
+                Repo.clone_from(github_url, project_path)
+                flash(f"Le projet '{project_name}' a été ajouté avec succès.", "success")
+        except Exception as e:
+            flash(f"Erreur lors du clonage : {e}", "error")
+
+        return redirect(url_for("index"))
+
+    return render_template("add_project.html")
 
 if __name__ == "__main__":
     app.run(debug=False, host="0.0.0.0")
