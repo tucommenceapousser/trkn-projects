@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion aux Logs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: #00ff00;
+            padding: 20px;
+        }
+        input[type="password"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            background-color: #333;
+            border-radius: 5px;
+        }
+        input[type="submit"] {
+            padding: 10px;
+            font-size: 16px;
+            background-color: #00ff00;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #1a1a1a;
+        }
+        h1 {
+            color: #00ff00;
+        }
+        .flash {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Veuillez entrer le mot de passe pour accéder aux logs</h1>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li class="flash">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('view_logs') }}" method="POST">
+        <input type="password" name="password" placeholder="Entrez le mot de passe" required>
+        <input type="submit" value="Se connecter">
+    </form>
+</body>
+</html>
