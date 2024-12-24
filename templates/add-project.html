@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajouter un projet</title>
+</head>
+<body>
+    <h1>Ajouter un projet depuis GitHub</h1>
+    <form action="{{ url_for('add_project') }}" method="post">
+        <input type="text" name="github_url" placeholder="URL du référentiel GitHub" required>
+        <button type="submit">Ajouter</button>
+    </form>
+
+    <a href="{{ url_for('index') }}">Retour</a>
+</body>
+</html>
