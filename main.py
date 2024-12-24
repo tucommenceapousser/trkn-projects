@@ -75,8 +75,15 @@ def project_details(project_name):
     if not os.path.exists(project_path):
         return "Projet introuvable.", 404
 
-    return render_template("project.html", project_name=project_name)
+    # Liste des fichiers et sous-dossiers
+    contents = []
+    for root, dirs, files in os.walk(project_path):
+        for name in dirs:
+            contents.append(os.path.relpath(os.path.join(root, name), project_path))
+        for name in files:
+            contents.append(os.path.relpath(os.path.join(root, name), project_path))
 
+    return render_template("project.html", project_name=project_name, contents=contents)
 # Route pour ajouter un projet depuis GitHub
 @app.route("/add_project", methods=["GET", "POST"])
 def add_project():
