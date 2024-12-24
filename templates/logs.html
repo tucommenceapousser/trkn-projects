@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logs des téléchargements</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: #00ff00; /* Texte fluo vert */
+            padding: 20px;
+        }
+        pre {
+            background-color: #111;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: Consolas, monospace;
+            color: #ffcc00; /* Couleur fluo jaune */
+        }
+        h1 {
+            color: #00ff00;
+        }
+    </style>
+</head>
+<body>
+    <h1>Logs des téléchargements</h1>
+    <pre>
+        {% for log in logs %}
+            {{ log }}
+        {% else %}
+            Aucun log disponible.
+        {% endfor %}
+    </pre>
+</body>
+</html>
