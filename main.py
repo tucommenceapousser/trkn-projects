@@ -37,13 +37,15 @@ def index():
 @app.route("/github_repos/<username>")
 def github_repos(username):
     github_api_url = f"https://api.github.com/users/{username}/repos"
-    response = requests.get(github_api_url)
+    headers = {"Authorization": f"token {os.getenv('GITHUB_TOKEN')}"}
+    response = requests.get(github_api_url, headers=headers)
 
     if response.status_code != 200:
         return f"Erreur : Impossible de récupérer les référentiels pour l'utilisateur {username}.", 500
 
     repos = response.json()
     return render_template("github_repos.html", username=username, repos=repos)
+
 # Route pour télécharger un projet
 @app.route("/download/<project_name>")
 def download(project_name):
