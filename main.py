@@ -37,6 +37,16 @@ def index():
 LOG_FILE = "downloads.log"
 SECRET_PASSWORD = os.getenv('mdp')  # Le mot de passe secret
 
+
+@app.route("/reset_logs")
+def reset_logs():
+    save_logs([])  # Réinitialisation des logs
+    return redirect("/logs")
+
+@app.route("/download_logs")
+def download_logs():
+    return send_file(LOGS_FILE, as_attachment=True)  # Téléchargement du fichier de logs
+
 @app.route("/logs", methods=["GET", "POST"])
 def view_logs():
     # Si le formulaire est soumis avec un mot de passe
