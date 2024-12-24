@@ -53,10 +53,23 @@
         button:hover {
             background-color: #00cc00;
         }
+        
+        .image-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
     </style>
 </head>
 <body>
     <h1>trhacknon - Mes Projets</h1>
+       <div class="image-container">
+        <img src="https://e.top4top.io/p_3280ljc1c0.png" alt="Image centrée">
+    </div>
     <h2>Liste des Projets</h2>
     <ul>
         {% for project in projects %}
