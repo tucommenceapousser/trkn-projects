@@ -12,9 +12,15 @@ app = Flask(__name__)
 # Dossier contenant les projets
 PROJECTS_DIR = "projects"
 
+# Vérifier et créer le dossier projects s'il n'existe pas
+if not os.path.exists(PROJECTS_DIR):
+    os.makedirs(PROJECTS_DIR)
+    print(f"Dossier '{PROJECTS_DIR}' créé.")
+
 # API pour géolocalisation
 GEO_API_KEY = os.getenv("GEO_API_KEY")
 GEO_API_URL = "https://ipinfo.io/"
+
 # Enregistrer les logs de téléchargement
 def log_download(data):
     with open("downloads.log", "a") as f:
