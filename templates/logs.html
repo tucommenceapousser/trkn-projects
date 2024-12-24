@@ -4,28 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logs des Téléchargements</title>
-<style>
+    <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #1a1a1a;
-            color: #00ff00; /* Texte fluo vert */
+            background-color: #121212;
+            color: #fff;
             padding: 20px;
-        }
-        pre {
-            background-color: #111;
-            padding: 15px;
-            border-radius: 5px;
-            overflow-x: auto;
-            font-family: Consolas, monospace;
-            color: #ffcc00; /* Couleur fluo jaune */
         }
         h1 {
             color: #00ff00;
         }
-        body { background-color: #121212; color: #fff; font-family: Arial, sans-serif; }
-        .log-entry { margin: 10px; padding: 10px; background-color: #1e1e1e; border-radius: 5px; }
-        .btn { padding: 5px 10px; color: #fff; background-color: #f00; border: none; cursor: pointer; }
-        .btn-reset { background-color: #00f; }
+        .log-entry {
+            margin: 15px 0;
+            padding: 15px;
+            background-color: #1e1e1e;
+            border-radius: 5px;
+            border: 1px solid #333;
+        }
+        .log-entry p {
+            margin: 5px 0;
+        }
+        .btn {
+            padding: 8px 12px;
+            color: #fff;
+            background-color: #f00;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn:hover {
+            background-color: #c00;
+        }
+        .btn-reset {
+            background-color: #00f;
+        }
+        .btn-reset:hover {
+            background-color: #009;
+        }
     </style>
 </head>
 <body>
@@ -36,12 +53,13 @@
 <a href="/reset_logs" class="btn btn-reset">Réinitialiser les logs</a>
 
 <h2>Liste des logs</h2>
+
 {% for log in logs %}
     <div class="log-entry">
         <p><strong>IP:</strong> {{ log['ip'] }}</p>
         <p><strong>Projet:</strong> {{ log['project'] }}</p>
         <p><strong>Agent utilisateur:</strong> {{ log['user_agent'] }}</p>
-        <p><strong>Geo Data:</strong> {{ log['geo_data'] }}</p>
+        <p><strong>Geo Data:</strong> {{ log['geo_data']['city'] }}, {{ log['geo_data']['country'] }}</p>
         <a href="/delete_log/{{ log['id'] }}" class="btn">Supprimer ce log</a>
     </div>
 {% endfor %}
