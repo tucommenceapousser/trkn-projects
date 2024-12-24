@@ -33,19 +33,33 @@ def index():
     projects = [d for d in os.listdir(PROJECTS_DIR) if os.path.isdir(os.path.join(PROJECTS_DIR, d))]
     return render_template("index.html", projects=projects)
 
-# Route pour afficher les référentiels publics d'un utilisateur GitHub
 @app.route("/github_repos/<username>")
 def github_repos(username):
-    github_api_url = f"https://api.github.com/users/{username}/repos"
-    headers = {"Authorization": f"token {os.getenv('GITHUB_TOKEN')}"}
-    response = requests.get(github_api_url, headers=headers)
+    # Nombre de repos par page
+    per_page = 30
+    page = request.args.get('page', 1, type=int)  # Obtenir la page actuelle, par défaut 1
+
+    # L'URL pour récupérer les repos avec la pagination
+    github_api_url = f"https://api.github.com/users/{username}/repos?per_page={per_page}&page={page}"
+    response = requests.get(github_api_url)
 
     if response.status_code != 200:
         return f"Erreur : Impossible de récupérer les référentiels pour l'utilisateur {username}.", 500
 
     repos = response.json()
-    return render_template("github_repos.html", username=username, repos=repos)
 
+    # Vérifier s'il y a encore des repos à afficher (si le nombre de repos est inférieur à `per_page`, nous sommes à la dernière page)
+    next_page = None
+    if len(repos) == per_page:
+        next_page = page + 1
+
+    prev_page = None
+    if page > 1:
+        prev_page = page - 1
+
+    return render_template("github_repos.html", username=username, repos=repos, next_page=next_page, prev_page=prev_page)
+
+# Route pour afficher les référentiels publics d'un utilisateur GitHub
 # Route pour télécharger un projet
 @app.route("/download/<project_name>")
 def download(project_name):
