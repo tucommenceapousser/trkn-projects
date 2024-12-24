@@ -21,6 +21,7 @@ if not os.path.exists(PROJECTS_DIR):
 # API pour géolocalisation
 GEO_API_KEY = os.getenv("GEO_API_KEY")
 GEO_API_URL = "https://ipinfo.io/"
+GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 
 # Enregistrer les logs de téléchargement
 def log_download(data):
@@ -41,7 +42,14 @@ def github_repos(username):
 
     # L'URL pour récupérer les repos avec la pagination
     github_api_url = f"https://api.github.com/users/{username}/repos?per_page={per_page}&page={page}"
-    response = requests.get(github_api_url)
+
+    # Ajout du token d'authentification dans les headers
+    headers = {
+        'Authorization': f'token {GITHUB_TOKEN}'
+    }
+
+    # Faire la requête GET avec l'en-tête d'authentification
+    response = requests.get(github_api_url, headers=headers)
 
     if response.status_code != 200:
         return f"Erreur : Impossible de récupérer les référentiels pour l'utilisateur {username}.", 500
@@ -58,6 +66,7 @@ def github_repos(username):
         prev_page = page - 1
 
     return render_template("github_repos.html", username=username, repos=repos, next_page=next_page, prev_page=prev_page)
+
 
 # Route pour afficher les référentiels publics d'un utilisateur GitHub
 # Route pour télécharger un projet
