@@ -82,10 +82,27 @@ def view_logs():
             return redirect(url_for("view_logs"))
         
         logs = load_logs()
+        # Récupération des coordonnées géographiques pour afficher la carte
+        for log in logs:
+            city = log['geo_data'].get('city', '')
+            country = log['geo_data'].get('country', '')
+            log['latitude'], log['longitude'] = get_coordinates(city, country)
         return render_template("logs.html", logs=logs)
     
     # Si la méthode est GET, on demande simplement un mot de passe
     return render_template("login.html")
+
+def get_coordinates(city, country):
+    # Utilisation de l'API de géolocalisation pour obtenir les coordonnées
+    url = f'https://api.opencagedata.com/geocode/v1/json?q={city},{country}&key={GEO_API_KEY}'
+    response = requests.get(url)
+    data = response.json()
+    
+    if data['results']:
+        lat = data['results'][0]['geometry']['lat']
+        lng = data['results'][0]['geometry']['lng']
+        return lat, lng
+    return None, None
 
 @app.route("/github_repos/<username>")
 def github_repos(username):
