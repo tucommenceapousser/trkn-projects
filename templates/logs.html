@@ -75,7 +75,7 @@
     <!-- Initialize Leaflet map for each log -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
-        var map = L.map('map-{{ log['id'] }}').setView([{{ log['geo_data']['latitude'] }}, {{ log['geo_data']['longitude'] }}], 13); // Center on log's coordinates
+        var map = L.map('map-{{ log['id'] }}').setView([{{ log['geo_data']['latitude'] | default(0) }}, {{ log['geo_data']['longitude'] | default(0) }}], 13); // Center on log's coordinates
 
         // Add OpenStreetMap tiles
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -83,7 +83,7 @@
         }).addTo(map);
 
         // Add a marker at the log's location
-        L.marker([{{ log['geo_data']['latitude'] }}, {{ log['geo_data']['longitude'] }}]).addTo(map)
+        L.marker([{{ log['geo_data']['latitude'] | default(0) }}, {{ log['geo_data']['longitude'] | default(0) }}]).addTo(map)
             .bindPopup("<b>{{ log['geo_data']['city'] }}</b><br>{{ log['geo_data']['country'] }}")
             .openPopup();
     </script>
