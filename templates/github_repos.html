@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>trhacknon - Référentiels GitHub de {{ username }}</title>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        h1, h2 {
+            color: #00ff00;
+            text-align: center;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background-color: #333;
+            margin: 5px;
+            padding: 10px;
+            border-radius: 5px;
+            color: #00e6e6;
+        }
+        a {
+            text-decoration: none;
+            color: #00ff00;
+        }
+        a:hover {
+            color: #00cc00;
+        }
+        .back-btn {
+            display: block;
+            margin: 20px auto;
+            width: 100px;
+            text-align: center;
+            padding: 10px;
+            background-color: #00ff00;
+            color: #000;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Référentiels GitHub de {{ username }}</h1>
+    <h2>Liste des Référentiels</h2>
+    <ul>
+        {% for repo in repos %}
+        <li>
+            <a href="{{ repo.html_url }}" target="_blank">{{ repo.name }}</a>
+            <p>Description : {{ repo.description or 'Aucune description' }}</p>
+            <p>Langage principal : {{ repo.language or 'Non spécifié' }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <a class="back-btn" href="{{ url_for('index') }}">Retour</a>
+</body>
+</html>
