@@ -35,7 +35,7 @@ def index():
     return render_template("index.html", projects=projects)
 
 LOG_FILE = "downloads.log"
-SECRET_PASSWORD = "Trh@ckn0n"  # Le mot de passe secret
+SECRET_PASSWORD = os.getenv('mdp')  # Le mot de passe secret
 
 @app.route("/logs", methods=["GET", "POST"])
 def view_logs():
