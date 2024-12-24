@@ -104,7 +104,7 @@ def add_project():
         github_url = request.form.get("github_url")
         if not github_url:
             flash("URL du référentiel GitHub manquante.", "error")
-            return redirect(url_for("add_project"))
+            return redirect(url_for("index"))
 
         try:
             # Nom du projet basé sur le dernier segment de l'URL
@@ -122,6 +122,7 @@ def add_project():
 
         return redirect(url_for("index"))
 
+    # Afficher une page où l'utilisateur peut ajouter manuellement une URL de repo
     return render_template("add_project.html")
 
 if __name__ == "__main__":
